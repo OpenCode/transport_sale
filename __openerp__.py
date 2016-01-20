@@ -18,6 +18,7 @@
     """,
     'data': [
         'transport_sale.xml',
+        'security/security.xml',
         'security/ir.model.access.csv',
         ],
     'installable': True,

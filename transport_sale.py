@@ -64,6 +64,20 @@ class SaleOrderFleetVehicle(osv.osv):
             obj='sale.order.cargo', fields_id='sale_order_fleet_id',
             string='Cargo', required=True,
             help=_('All sale order transported cargo')),
+        'company_id': fields.many2one('res.company', string='Company'),
+        }
+
+    def _get_default_company(self, cr, uid, context=None):
+        company_id = self.pool.get('res.users')._get_company(
+            cr, uid, context=context)
+        if not company_id:
+            raise osv.except_osv(
+                _('Error!'),
+                _('There is no default company for the current user!'))
+        return company_id
+
+    _defaults = {
+        'company_id': _get_default_company,
         }
 
     def fleet_trailer_id_change(self, cr, uid, ids, fleet_trailer_id):
@@ -87,7 +101,7 @@ class SaleOrderFleetVehicle(osv.osv):
         if vehicle:
             result['license_plate'] = vehicle.license_plate
             result['employee_driver_id'] = vehicle.emp_driver_id.id
-            result['internal_number']=vehicle.internal_number
+            result['internal_number'] = vehicle.internal_number
         if sale_order:
             result['sales_date'] = sale_order.date_order
             result['partner_departure_id'] = sale_order.partner_departure_id.id
@@ -134,6 +148,20 @@ class SaleOrderCargo(osv.osv):
                                          required=True),
         'transport_from_id': fields.many2one(obj='res.partner', string='From'),
         'transport_to_id': fields.many2one(obj='res.partner', string='To'),
+        'company_id': fields.many2one('res.company', string='Company'),
+        }
+
+    def _get_default_company(self, cr, uid, context=None):
+        company_id = self.pool.get('res.users')._get_company(
+            cr, uid, context=context)
+        if not company_id:
+            raise osv.except_osv(
+                _('Error!'),
+                _('There is no default company for the current user!'))
+        return company_id
+
+    _defaults = {
+        'company_id': _get_default_company,
         }
 
     def cargo_id_change(self, cr, uid, ids, cargo_product_id, context):
@@ -181,7 +209,7 @@ class SaleOrder(osv.osv):
                 return False
             else:
                 return True
-        #TODO : check condition and return boolean accordingly
+        # TODO : check condition and return boolean accordingly
 
     def _validate_cargo_products(self, cr, uid, ids):
         result = True
@@ -270,9 +298,9 @@ class FleetVehicle(osv.osv):
     _inherit = 'fleet.vehicle'
 
     _columns = {
-        'sales_order_ids':fields.one2many(obj='sale.order.fleet_vehicle',
-                                          fields_id='fleet_vehicle_id',
-                                          string='Vehicle Sales'),
+        'sales_order_ids': fields.one2many(obj='sale.order.fleet_vehicle',
+                                           fields_id='fleet_vehicle_id',
+                                           string='Vehicle Sales'),
         'internal_number': fields.integer(string='Internal Number'),
         'is_trailer': fields.boolean(string='Is Trailer', required=False),
         }
