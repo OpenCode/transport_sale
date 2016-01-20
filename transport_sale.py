@@ -23,7 +23,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 
-class sale_order_fleet_vehicle(osv.osv):
+class SaleOrderFleetVehicle(osv.osv):
 
     _name = 'sale.order.fleet_vehicle'
     _description = 'All sales order and associated vehicles'
@@ -99,11 +99,11 @@ class sale_order_fleet_vehicle(osv.osv):
     def copy(self, cr, uid, _id, default=None, context=None):
         if not default:
             default = {}
-        return super(sale_order_fleet_vehicle, self).copy(
+        return super(SaleOrderFleetVehicle, self).copy(
             cr, uid, _id, default, context=context)
 
 
-class sale_order_cargo(osv.osv):
+class SaleOrderCargo(osv.osv):
 
     _name = 'sale.order.cargo'
     _description = 'Transport cargo from a sale order transport service'
@@ -149,12 +149,12 @@ class sale_order_cargo(osv.osv):
     def copy(self, cr, uid, _id, default=None, context=None):
         if not default:
             default = {}
-        res_id = super(sale_order_cargo, self).copy(cr, uid, _id, default,
-                                                    context)
+        res_id = super(SaleOrderCargo, self).copy(cr, uid, _id, default,
+                                                  context)
         return res_id
 
 
-class sale_order(osv.osv):
+class SaleOrder(osv.osv):
 
     _inherit = 'sale.order'
 
@@ -264,10 +264,8 @@ class sale_order(osv.osv):
         (_validate_cargo_products_qty, "Error: In products quantities",
          ['cargo_ids', 'order_line'])]
 
-sale_order()
 
-
-class fleet_vehicle(osv.osv):
+class FleetVehicle(osv.osv):
 
     _inherit = 'fleet.vehicle'
 
@@ -279,10 +277,8 @@ class fleet_vehicle(osv.osv):
         'is_trailer': fields.boolean(string='Is Trailer', required=False),
         }
 
-fleet_vehicle()
 
-
-class hr_employee_driver_sales(osv.osv):
+class HrEmployeeDriverSales(osv.osv):
 
     _inherit = 'hr.employee'
 
@@ -292,5 +288,3 @@ class hr_employee_driver_sales(osv.osv):
                                            string='Driver Sales'),
         'is_driver': fields.boolean('Is Driver', required=False),
         }
-
-hr_employee_driver_sales()
